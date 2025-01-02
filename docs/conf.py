@@ -292,7 +292,7 @@ epub_copyright = u'Django Software Foundation and individual contributors'
 # The format is a list of tuples containing the path and title.
 #epub_pre_files = []
 
-# HTML files shat should be inserted after the pages created by sphinx.
+# HTML files that should be inserted after the pages created by sphinx.
 # The format is a list of tuples containing the path and title.
 #epub_post_files = []
 
@@ -320,7 +320,7 @@ epub_copyright = u'Django Software Foundation and individual contributors'
 
 # Example configuration for intersphinx: refer to the Python standard library.
 intersphinx_mapping = {
-    'python': ('https://docs.python.org/2', None),
+    'python': ('https://docs.python.org/3', None),
     'django': ('https://docs.djangoproject.com/en/dev/',
                'https://docs.djangoproject.com/en/dev/_objects/'),
 }

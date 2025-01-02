@@ -2,7 +2,7 @@ from django.test import SimpleTestCase
 
 from localflavor.fr.forms import (FRDepartmentField, FRDepartmentSelect, FRNationalIdentificationNumber,
                                   FRRegion2016Select, FRRegionField, FRRegionSelect, FRSIRENField, FRSIRETField,
-                                  FRZipCodeField)
+                                  FRZipCodeField, FRRNAField)
 
 DEP_SELECT_OUTPUT = '''
     <select name="dep">
@@ -271,10 +271,12 @@ class FRLocalFlavorTests(SimpleTestCase):
             '752932715': '752932715',
             '752 932 715': '752932715',
             '752-932-715': '752932715',
+            '356000000': '356000000'
         }
         invalid = {
             '1234': error_format,               # wrong size
             '752932712': error_format,     # Bad luhn on SIREN
+            '35600000014597' : error_format
         }
         self.assertFieldOutput(FRSIRENField, valid, invalid)
 
@@ -294,11 +296,13 @@ class FRLocalFlavorTests(SimpleTestCase):
             '75293271500010': '75293271500010',
             '752 932 715 00010': '75293271500010',
             '752-932-715-00010': '75293271500010',
+            '35600000014597' : '35600000014597', # Special case La Poste
         }
         invalid = {
             '1234': error_format,               # wrong size
             '75293271200017': error_format,     # Bad luhn on SIREN
             '75293271000010': error_format,     # Bad luhn on whole
+            '35600000014596' : error_format     # Special case La Poste
         }
         self.assertFieldOutput(FRSIRETField, valid, invalid)
 
@@ -313,3 +317,18 @@ class FRLocalFlavorTests(SimpleTestCase):
         self.assertIsNone(siret_form_field.prepare_value(None))
         self.assertEqual(
             siret_form_field.clean('752 932 715 00010'), '75293271500010')
+
+    def test_FRRNANumber(self):
+        error_format = ['Enter a valid French RNA number.']
+        valid = {
+            'W442010167': 'W442010167',
+            'W-442010167': 'W442010167',
+            'W 442010167': 'W442010167',
+        }
+        invalid = {
+            '442010167': error_format,          # W Letter missing
+            'W4420101671': error_format,        # Too many numbers
+            'W44201016': error_format,          # Too few numbers
+            '5142010167': error_format,         # W Letter missing and too many numbers
+        }
+        self.assertFieldOutput(FRRNAField, valid, invalid)

@@ -35,8 +35,7 @@ CURP_INCONVENIENT_WORDS = [
     'MEON', 'MIAR', 'MION', 'MOCO', 'MOKO', 'MULA', 'MULO', 'NACA',
     'NACO', 'PEDA', 'PEDO', 'PENE', 'PIPI', 'PITO', 'POPO', 'PUTA',
     'PUTO', 'QULO', 'RATA', 'ROBA', 'ROBE', 'ROBO', 'RUIN', 'SENO',
-    'TETA', 'VACA', 'VAGA', 'VAGO', 'VAKA', 'VUEI', 'VUEY', 'WUEI',
-    'WUEY',
+    'TETA', 'VAGA', 'VAGO', 'VAKA', 'VUEI', 'VUEY', 'WUEI', 'WUEY',
 ]
 
 
@@ -112,7 +111,7 @@ class MXRFCField(RegexField):
     def clean(self, value):
         value = super().clean(value)
         if value in self.empty_values:
-            return self.empty_value
+            return value
         value = value.upper()
         if self._has_homoclave(value):
             if not value[-1] == self._checksum(value[:-1]):
@@ -194,7 +193,7 @@ class MXCLABEField(RegexField):
     def clean(self, value):
         value = super().clean(value)
         if value in self.empty_values:
-            return self.empty_value
+            return value
         if not value.isdigit():
             raise ValidationError(self.error_messages['invalid'], code='invalid')
         if not self._checksum(value):
@@ -245,7 +244,7 @@ class MXCURPField(RegexField):
     def clean(self, value):
         value = super().clean(value)
         if value in self.empty_values:
-            return self.empty_value
+            return value
         value = value.upper()
         if value[-1] != self._checksum(value[:-1]):
             raise ValidationError(self.error_messages['invalid_checksum'], code='invalid_checksum')
@@ -303,7 +302,7 @@ class MXSocialSecurityNumberField(RegexField):
     def clean(self, value):
         value = super().clean(value)
         if value in self.empty_values:
-            return self.empty_value
+            return value
         if value[-1] != self.__checksum(value[:-1]):
             raise ValidationError(self.error_messages['invalid_checksum'], code='invalid_checksum')
         return value

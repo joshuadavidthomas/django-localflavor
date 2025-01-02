@@ -1,7 +1,7 @@
 Changelog
 =========
 
-4.0   (unreleased)
+4.1   (unreleased)
 ------------------
 
 New flavors:
@@ -10,21 +10,115 @@ New flavors:
 
 New fields for existing flavors:
 
-- None
+- Added CIN Number field in Morocco flavor (`gh-705 <https://github.com/django/django-localflavor/pull/507>`_).
 
 Modifications to existing flavors:
 
+- Fix Belarus passport field description punctuation
+  (`gh-484 <https://github.com/django/django-localflavor/pull/484>`_).
+- Change `Kiev` to `Kyiv` 🇺🇦 according to ISO_3166-2:UA
+- Accept French Postal Services identifiers in forms
+  (`gh-505 <https://github.com/django/django-localflavor/pull/505>`_).
+
+Other changes:
+
+- Dropped support for Python 3.6 and 3.7.
+- Dropped support for Django 4.0.
+- Added support for Python 3.12.
+- Added support for Django 5.0.
+
+
+4.0   (2023-04-22)
+------------------
+
+New flavors:
+
+- Nepal LocalFlavor: Support for Nepal added
+  (`gh-451 <https://github.com/django/django-localflavor/pull/451>`_).
+- Belarus localflavor
+  (`gh-422 <https://github.com/django/django-localflavor/pull/422>`_,
+  `gh-442 <https://github.com/django/django-localflavor/pull/442>`_).
+- Ghana localflavor
+  (`gh-460 <https://github.com/django/django-localflavor/pull/460>`_).
+
+New fields for existing flavors:
+
+- Added `fr.forms.FRRNAField` models field
+  (`gh-443 <https://github.com/django/django-localflavor/pull/443>`_).
+- Added permanent account number(PAN) field in Indian flavor.
+  (`gh-457 <https://github.com/django/django-localflavor/pull/457>`_).
+- Added the Canadian Models fields.
+  (`gh-465 <https://github.com/django/django-localflavor/pull/465>`_).
+
+Modifications to existing flavors:
+
+- Properly validate IBANs using BBAN to ensure invalid IBANs cannot be entered,
+  updated IBAN_SEPA_COUNTRIES and IBAN_COUNTRY_CODE_LENGTH to latest data
+  (`gh-486 <https://github.com/django/django-localflavor/pull/486>`_).
+- Fix typo in Marijampolė county name in LTCountySelect
+  (`gh-480 <https://github.com/django/django-localflavor/pull/480>`_).
+- Add support for new Finnish identity codes
+  (`gh-478 <https://github.com/django/django-localflavor/pull/478>`_).
+- CIF spanish starting with 'U' bug resolved
+  (`gh-469 <https://github.com/django/django-localflavor/pull/469>`_).
 - Fix error code for BRPostalCodeValidator
   (`gh-448 <https://github.com/django/django-localflavor/pull/448>`_).
 - Fix spelling of the India state of Chhattisgarh
   (`gh-444 <https://github.com/django/django-localflavor/pull/444>`_).
 - Fix CURP regex for MX flavor
   (`gh-449 <https://github.com/django/django-localflavor/pull/449>`_).
+- Change text based fields that inherited from `django.forms.Field` to inherit from `django.forms.CharField`. The
+  following fields have been updated
+  (`gh-446 <https://github.com/django/django-localflavor/pull/446>`_):
+
+  - `at.forms.ATSocialSecurityNumberField`
+  - `br.forms.BRStateChoiceField`
+  - `ca.forms.CAProvinceField`
+  - `ca.forms.CASocialInsuranceNumberField`
+  - `ch.forms.CHIdentityCardNumberField`
+  - `cu.forms.CUProvinceField`
+  - `cu.forms.CURegionField`
+  - `cz.forms.CZBirthNumberField`
+  - `cz.forms.CZICNumberField`
+  - `de.forms.DEIdentityCardNumberField`
+  - `ee.forms.EEBusinessRegistryCode`
+  - `ee.forms.EEPersonalIdentificationCode`
+  - `fi.forms.FISocialSecurityNumber`
+  - `gr.forms.GRTaxNumberCodeField`
+  - `hr.forms.HRJMBAGField`
+  - `hr.forms.HRJMBGField`
+  - `hr.forms.HRLicensePlateField`
+  - `hr.forms.HRPostalCodeField`
+  - `id_.forms.IDLicensePlateField`
+  - `id_.forms.IDNationalIdentityNumberField`
+  - `id_.forms.IDPostCodeField`
+  - `il.forms.ILIDNumberField`
+  - `in_.forms.INAadhaarNumberField`
+  - `in_.forms.INStateField`
+  - `ir.forms.IRIDNumberField`
+  - `it.forms.ITVatNumberField`
+  - `lt.forms.LTPostalCodeField`
+  - `lv.forms.LVPersonalCodeField`
+  - `lv.forms.LVPostalCodeField`
+  - `no.forms.NOSocialSecurityNumber`
+  - `nz.forms.NZBankAccountNumberField`
+  - `pt.forms.PTCitizenCardNumberField`
+  - `pt.forms.PTSocialSecurityNumberField`
+  - `ro.forms.ROCountyField`
+  - `tr.forms.TRIdentificationNumberField`
+  - `us.forms.USStateField`
+- Removed inconvenient word VACA from CURP_INCONVENIENT_WORDS for MX flavor
 
 Other changes:
 
-- None
+- Use 'return value' when value is in the empty_values list
+  (`gh-461 <https://github.com/django/django-localflavor/pull/461>`_).
 
+- Dropped support for Django 2.2, 3.0 and 3.1.
+
+- Dropped support for Python 3.5.
+
+- Added support for Python 3.10 and 3.11.
 
 
 3.1   (2021-05-28)

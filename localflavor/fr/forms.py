@@ -108,7 +108,7 @@ class FRNationalIdentificationNumber(CharField):
     def clean(self, value):
         value = super().clean(value)
         if value in self.empty_values:
-            return self.empty_value
+            return value
 
         value = value.replace(' ', '').replace('-', '')
 
@@ -184,21 +184,7 @@ class FRNationalIdentificationNumber(CharField):
             raise ValidationError(self.error_messages['invalid'], code='invalid')
 
 
-class FRSIRENENumberMixin:
-    """Abstract class for SIREN and SIRET numbers, from the SIRENE register."""
-
-    def clean(self, value):
-        value = super().clean(value)
-        if value in self.empty_values:
-            return self.empty_value
-
-        value = value.replace(' ', '').replace('-', '')
-        if not self.r_valid.match(value) or not luhn.is_valid(value):
-            raise ValidationError(self.error_messages['invalid'], code='invalid')
-        return value
-
-
-class FRSIRENField(FRSIRENENumberMixin, CharField):
+class FRSIRENField(CharField):
     """
     SIREN stands for "Système d'identification du répertoire des entreprises".
 
@@ -220,8 +206,18 @@ class FRSIRENField(FRSIRENENumberMixin, CharField):
         value = value.replace(' ', '').replace('-', '')
         return ' '.join((value[:3], value[3:6], value[6:]))
 
+    def clean(self, value):
+        value = super().clean(value)
+        if value in self.empty_values:
+            return value
 
-class FRSIRETField(FRSIRENENumberMixin, CharField):
+        value = value.replace(' ', '').replace('-', '')
+        if not self.r_valid.match(value) or not luhn.is_valid(value):
+            raise ValidationError(self.error_messages['invalid'], code='invalid')
+        return value
+
+
+class FRSIRETField(CharField):
     """
     SIRET stands for "Système d'identification du répertoire des établissements".
 
@@ -240,11 +236,12 @@ class FRSIRETField(FRSIRENENumberMixin, CharField):
     def clean(self, value):
         value = super().clean(value)
         if value in self.empty_values:
-            return self.empty_value
+            return value
 
         value = value.replace(' ', '').replace('-', '')
 
-        if not luhn.is_valid(value[:9]):
+        if not self.r_valid.match(value) or not luhn.is_valid(value[:9]) or \
+            (value.startswith("356000000") and sum(int(x) for x in value) % 5 != 0):
             raise ValidationError(self.error_messages['invalid'], code='invalid')
         return value
 
@@ -253,3 +250,31 @@ class FRSIRETField(FRSIRENENumberMixin, CharField):
             return value
         value = value.replace(' ', '').replace('-', '')
         return ' '.join((value[:3], value[3:6], value[6:9], value[9:]))
+
+
+class FRRNAField(CharField):
+    """
+    RNA Stands for "Répertoire National des Associations"
+
+    It's under the authority of the French Minister of the Interior.
+    See https://fr.wikipedia.org/wiki/R%C3%A9pertoire_national_des_associations for more information.
+
+    .. versionadded:: 4.0
+    """
+    default_error_messages = {
+        'invalid': _('Enter a valid French RNA number.'),
+    }
+
+    regex = re.compile(r'^W\d{9}$')
+
+    def clean(self, value):
+        value = super().clean(value)
+
+        if value in self.empty_values:
+            return self.empty_value
+
+        value = value.replace(' ', '').replace('-', '').replace('.', '')
+
+        if not self.regex.match(value):
+            raise ValidationError(self.error_messages['invalid'], code=['invalid'])
+        return value
