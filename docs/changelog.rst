@@ -6,8 +6,6 @@ Changelog
 
 New flavors:
 
-- Added Falkland Islands (Malvinas), Honduras, Oman, Somalia and Yemen to IBAN_COUNTRY_CODE_LENGTH dict based on
-  version 101 of the IBAN registry document from December 2025.
 - Added local flavor for Qatar
   (`gh-544 <https://github.com/django/django-localflavor/pull/544>`_).
 - Added local flavor for Taiwan
@@ -29,6 +27,10 @@ Modifications to existing flavors:
   (`gh-529 <https://github.com/django/django-localflavor/pull/529>`_).
 - Update SI postal codes
   (`gh-531 <https://github.com/django/django-localflavor/pull/531>`_).
+- Added Falkland Islands (Malvinas), Honduras, Oman, Somalia and Yemen to IBAN_COUNTRY_CODE_LENGTH dict based on
+  version 101 of the IBAN registry document from December 2025. The minium version of python-stdnum is now 2.2.
+  (`gh-538 <https://github.com/django/django-localflavor/pull/538>`_),
+  (`gh-547 <https://github.com/django/django-localflavor/pull/547>`_)
 - Updated NORDEA_COUNTRY_CODE_LENGTH with data from nordea-country-and-currency-list.pdf v2.2
   (`gh-546 <https://github.com/django/django-localflavor/pull/546>`_).
 
